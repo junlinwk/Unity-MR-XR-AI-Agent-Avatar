@@ -35,6 +35,7 @@ public class RealtimeAPIWrapper : MonoBehaviour
     public static event Action OnResponseContentPartAdded;
     public static event Action OnResponseCancelled;
     public static event Action OnConnectButtonPressed;
+    public static event Action<string> OnDoctorStateRequested;
 
     private void Start() => AudioRecorder.OnAudioRecorded += SendAudioToAPI;
     private void OnApplicationQuit() => DisposeWebSocket();
@@ -234,8 +235,10 @@ public class RealtimeAPIWrapper : MonoBehaviour
             { "response.created", HandleResponseCreated },
             { "session.created", _ => {
                 OnSessionCreated?.Invoke();
+                SendSessionUpdate();
                 SendTextToAPI(systemPrompt);
             }},
+            { "response.function_call_arguments.done", HandleFunctionCallDone },
             { "response.audio.done", _ => OnResponseAudioDone?.Invoke() },
             { "response.audio_transcript.done", _ => OnResponseAudioTranscriptDone?.Invoke() },
             { "response.content_part.done", _ => OnResponseContentPartDone?.Invoke() },
@@ -305,6 +308,93 @@ public class RealtimeAPIWrapper : MonoBehaviour
         if (!string.IsNullOrEmpty(errorMessage))
         {
             Debug.Log("openai error: " + errorMessage);
+        }
+    }
+
+    /// <summary>
+    /// registers tools and persona instructions on the session.
+    /// called once after session.created.
+    /// </summary>
+    private async void SendSessionUpdate()
+    {
+        if (ws == null || ws.State != WebSocketState.Open) return;
+
+        var sessionUpdate = new
+        {
+            type = "session.update",
+            session = new
+            {
+                tools = new object[]
+                {
+                    new
+                    {
+                        type = "function",
+                        name = "set_doctor_state",
+                        description = "Set the doctor's body-language state during the conversation. Call this before or while you speak so the avatar animates accordingly. Use Listening while the patient describes symptoms; Explaining when giving diagnosis or recommendations; Concerned when serious symptoms are mentioned (chest pain, high fever, difficulty breathing, etc.); Idle otherwise.",
+                        parameters = new
+                        {
+                            type = "object",
+                            properties = new
+                            {
+                                state = new
+                                {
+                                    type = "string",
+                                    @enum = new[] { "Listening", "Explaining", "Concerned", "Idle" }
+                                }
+                            },
+                            required = new[] { "state" }
+                        }
+                    }
+                },
+                tool_choice = "auto"
+            }
+        };
+
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(sessionUpdate);
+        byte[] bytes = Encoding.UTF8.GetBytes(json);
+        await ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
+    }
+
+    /// <summary>
+    /// handles model-issued function calls, dispatches to listeners,
+    /// and acknowledges with function_call_output so the model can continue.
+    /// </summary>
+    private async void HandleFunctionCallDone(JObject eventMessage)
+    {
+        string name = eventMessage["name"]?.ToString();
+        string callId = eventMessage["call_id"]?.ToString();
+        string args = eventMessage["arguments"]?.ToString();
+
+        if (name == "set_doctor_state" && !string.IsNullOrEmpty(args))
+        {
+            try
+            {
+                var parsed = JObject.Parse(args);
+                string state = parsed["state"]?.ToString();
+                if (!string.IsNullOrEmpty(state))
+                    OnDoctorStateRequested?.Invoke(state);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning("[Realtime] failed to parse function args: " + ex.Message);
+            }
+        }
+
+        if (ws != null && ws.State == WebSocketState.Open && !string.IsNullOrEmpty(callId))
+        {
+            var output = new
+            {
+                type = "conversation.item.create",
+                item = new
+                {
+                    type = "function_call_output",
+                    call_id = callId,
+                    output = "ok"
+                }
+            };
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(output);
+            byte[] bytes = Encoding.UTF8.GetBytes(json);
+            await ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
         }
     }
 
