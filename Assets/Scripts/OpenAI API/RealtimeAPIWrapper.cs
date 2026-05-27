@@ -343,10 +343,9 @@ public class RealtimeAPIWrapper : MonoBehaviour
     private void HandleError(JObject eventMessage)
     {
         string errorMessage = eventMessage["error"]?["message"]?.ToString();
-        if (!string.IsNullOrEmpty(errorMessage))
-        {
-            Debug.Log("openai error: " + errorMessage);
-        }
+        string errorType = eventMessage["error"]?["type"]?.ToString();
+        string errorParam = eventMessage["error"]?["param"]?.ToString();
+        Debug.LogError($"[RealtimeAPI] openai error  type={errorType}  param={errorParam}  message={errorMessage}");
     }
 
     /// <summary>
@@ -362,6 +361,7 @@ public class RealtimeAPIWrapper : MonoBehaviour
             type = "session.update",
             session = new
             {
+                type = "realtime",
                 tools = new object[]
                 {
                     new
@@ -377,7 +377,7 @@ public class RealtimeAPIWrapper : MonoBehaviour
                                 state = new
                                 {
                                     type = "string",
-                                    @enum = new[] { "Listening", "Explaining", "Concerned", "Frustrated" ,"Idle" }
+                                    @enum = new[] { "Listening", "Explaining", "Concerned", "Frustrated", "Idle" }
                                 }
                             },
                             required = new[] { "state" }
@@ -391,6 +391,7 @@ public class RealtimeAPIWrapper : MonoBehaviour
         string json = Newtonsoft.Json.JsonConvert.SerializeObject(sessionUpdate);
         byte[] bytes = Encoding.UTF8.GetBytes(json);
         await ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
+        Debug.Log("[RealtimeAPI] session.update sent with set_doctor_state tool registered");
     }
 
     /// <summary>
