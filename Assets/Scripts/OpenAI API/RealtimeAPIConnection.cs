@@ -29,12 +29,26 @@ public class RealtimeAPIConnection : MonoBehaviour
         realtimeWrapper = GetComponent<RealtimeAPIWrapper>();
     }
 
+    void OnEnable()
+    {
+        RealtimeAPIWrapper.OnWebSocketConnected += HandleConnected;
+        RealtimeAPIWrapper.OnWebSocketClosed += HandleClosed;
+    }
+
+    void OnDisable()
+    {
+        RealtimeAPIWrapper.OnWebSocketConnected -= HandleConnected;
+        RealtimeAPIWrapper.OnWebSocketClosed -= HandleClosed;
+    }
+
+    private void HandleConnected() => isConnected = true;
+    private void HandleClosed() => isConnected = false;
+
     void Update()
     {
-        // 1. Connect via controller (X button)
+        // 1. Connect via controller (Y button)
         if (OVRInput.GetDown(OVRInput.RawButton.Y))
         {
-            isConnected = !isConnected;
             realtimeWrapper.ConnectWebSocketButton();
         }
     }

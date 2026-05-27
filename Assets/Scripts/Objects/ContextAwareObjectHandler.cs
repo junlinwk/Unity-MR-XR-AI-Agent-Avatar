@@ -39,9 +39,15 @@ public class ContextAwareObjectHandler : MonoBehaviour
     // Send context information to the Realtime API
     void SendContextToAPI(string contextPrompt)
     {
-        if (realtimeAPIWrapper != null && RealtimeAPIConnection.instance.isConnected)
+        if (realtimeAPIWrapper == null) return;
+        bool isConnected = RealtimeAPIConnection.instance != null
+                           && RealtimeAPIConnection.instance.isConnected;
+        if (!isConnected)
         {
-            realtimeAPIWrapper.SendTextToAPI(contextPrompt);
+            Debug.Log($"[ContextAware] skipped (not connected): {contextPrompt}");
+            return;
         }
+        Debug.Log($"[ContextAware] sending: {contextPrompt}");
+        realtimeAPIWrapper.SendUserMessageWithFullResponse(contextPrompt);
     }
 }
