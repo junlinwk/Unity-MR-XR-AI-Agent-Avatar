@@ -12,8 +12,10 @@
 # Unity generated files
 [Ss]ysinfo.txt
 *.stackdump
+*.blob
 TempAssembly.dll
 UpgradeLog*.htm
+
 
 # Unity package artifacts
 *.unitypackage

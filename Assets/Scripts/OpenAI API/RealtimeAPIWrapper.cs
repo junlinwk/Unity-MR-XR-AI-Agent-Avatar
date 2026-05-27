@@ -11,7 +11,7 @@ public class RealtimeAPIWrapper : MonoBehaviour
 {
     private ClientWebSocket ws;
     [SerializeField] string apiKey = "YOUR_API_KEY";
-    [TextArea (4, 10)] [SerializeField] private string systemPrompt = "You are a helpful assistant.";
+    [TextArea(4, 10)][SerializeField] private string systemPrompt = "You are a helpful assistant.";
     public AudioRecorder audioRecorder;
     public AudioPlayer audioPlayer;
     public AudioPlayer lipsyncAudioPlayer;
@@ -330,7 +330,7 @@ public class RealtimeAPIWrapper : MonoBehaviour
                     {
                         type = "function",
                         name = "set_doctor_state",
-                        description = "Set the doctor's body-language state during the conversation. Call this before or while you speak so the avatar animates accordingly. Use Listening while the patient describes symptoms; Explaining when giving diagnosis or recommendations; Concerned when serious symptoms are mentioned (chest pain, high fever, difficulty breathing, etc.); Idle otherwise.",
+                        description = "Set the doctor's body-language state during the conversation. Call this before or while you speak so the avatar animates accordingly. Use Listening while the patient describes symptoms; Explaining when giving diagnosis or recommendations; Concerned when serious symptoms are mentioned (chest pain, high fever, difficulty breathing, etc.); Frustrated when the patient repeatedly questions or doubts your diagnosis (more than 2 times); Idle otherwise.",
                         parameters = new
                         {
                             type = "object",
@@ -339,7 +339,7 @@ public class RealtimeAPIWrapper : MonoBehaviour
                                 state = new
                                 {
                                     type = "string",
-                                    @enum = new[] { "Listening", "Explaining", "Concerned", "Idle" }
+                                    @enum = new[] { "Listening", "Explaining", "Concerned", "Frustrated" ,"Idle" }
                                 }
                             },
                             required = new[] { "state" }

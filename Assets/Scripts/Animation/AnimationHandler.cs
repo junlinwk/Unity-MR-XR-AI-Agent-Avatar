@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AnimationHandler : MonoBehaviour
 {
-    public enum DoctorState { Idle = 0, Listening = 1, Explaining = 2, Concerned = 3 }
+    public enum DoctorState { Idle = 0, Listening = 1, Explaining = 2, Concerned = 3, Frustrated = 4 }
 
     // Animator parameter names — must exist in the AvatarControllerExample.controller
     private const string PARAM_TALKING = "isTalking";

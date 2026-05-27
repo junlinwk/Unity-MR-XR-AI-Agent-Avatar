@@ -884,7 +884,7 @@ MonoBehaviour:
   requestBodyTrackingPermissionOnStartup: 0
   requestFaceTrackingPermissionOnStartup: 0
   requestEyeTrackingPermissionOnStartup: 0
-  requestScenePermissionOnStartup: 0
+  requestScenePermissionOnStartup: 1
   requestRecordAudioPermissionOnStartup: 0
   _localDimming: 1
   _trackingOriginType: 1
@@ -1716,6 +1716,17 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &933150551 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5871265475931972310, guid: 8d8b50752af2ea347aab6ca42fb61c76, type: 3}
+  m_PrefabInstance: {fileID: 549404508}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6937544d08e2ba34da6ff4ab90cbfd84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &968487618
 GameObject:
   m_ObjectHideFlags: 0
@@ -2053,7 +2064,7 @@ MonoBehaviour:
   _activeManifestation: 1
   _activeSubMeshes: -1
   _activeSubMeshesIncludeUntyped: 1
-  _inputManager: {fileID: 0}
+  _inputManager: {fileID: 933150551}
   _facePoseBehavior: {fileID: 0}
   _eyePoseBehavior: {fileID: 0}
   _lipSync: {fileID: 2026624558}
@@ -3206,12 +3217,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dd71e0a1e024cc4c9cbe13295f61d66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  apiKey: your_api_key
-  systemPrompt: You are a helpful context-aware voice chatbot. In the following conversation,
-    you will receive audio from the user, please reply the user in audio patiently
-    and naturally. Also, you will receive the description of context in text. You
-    should interact with the user based on the context. Please start with greeting
-    to user.
+  apiKey: 
+  systemPrompt: "\u4F60\u662F\u300C\u9673\u91AB\u5E2B\u300D\uFF0C\u4E00\u4F4D\u6EAB\u548C\u3001\u5C08\u696D\u3001\u6709\u8010\u5FC3\u7684\u5BB6\u91AB\u79D1\u91AB\u5E2B\uFF0C\u76EE\u524D\u5728
+    MR \u865B\u64EC\u8A3A\u9593\u770B\u8A3A\u3002\u4F7F\u7528\u8005\u662F\u4F60\u7684\u75C5\u4EBA\u3002\n\n\u3010\u5C0D\u8A71\u539F\u5247\u3011\n-
+    \u4EE5\u7E41\u9AD4\u4E2D\u6587\u56DE\u61C9\uFF0C\u81EA\u7136\u3001\u6EAB\u548C\u3001\u8A9E\u901F\u9069\u4E2D\n-
+    \u4E00\u958B\u59CB\u5148\u7C21\u77ED\u554F\u5019\uFF0C\u4E26\u554F\u75C5\u4EBA\u300C\u4ECA\u5929\u54EA\u88E1\u4E0D\u8212\u670D\uFF1F\u300D\n-
+    \u75C5\u4EBA\u63CF\u8FF0\u75C7\u72C0\u6642\u8981\u8010\u5FC3\u8046\u807D\uFF0C\u5FC5\u8981\u6642\u8FFD\u554F\u7D30\u7BC0\uFF08\u591A\u4E45\u4E86\u3001\u983B\u7387\u3001\u8A98\u56E0\uFF09\n-
+    \u7D66\u8A3A\u65B7\u6216\u885B\u6559\u6642\u7528\u75C5\u4EBA\u807D\u5F97\u61C2\u7684\u8A71\uFF0C\u907F\u514D\u8271\u6DF1\u8853\u8A9E\n-
+    \u82E5\u807D\u5230\u56B4\u91CD\u75C7\u72C0\uFF08\u80F8\u75DB\u3001\u547C\u5438\u56F0\u96E3\u3001\u9AD8\u71D2\u4E0D\u9000\u3001\u610F\u8B58\u6A21\u7CCA\u7B49\uFF09\u8981\u7ACB\u5373\u5EFA\u8B70\u5C31\u91AB\n\n\u3010\u5834\u666F\u7269\u4EF6
+    context\u3011\n\u4F60\u6703\u6536\u5230 text \u8A0A\u606F\u63CF\u8FF0\u75C5\u4EBA\u6B63\u5728\u62FF\u8D77\u7684\u684C\u4E0A\u7269\u4EF6\uFF08\u4F8B\u5982\u9AD4\u6EAB\u8A08\u3001\u85E5\u74F6\u3001X
+    \u5149\u7247\uFF09\u3002\u8ACB\u6839\u64DA\u7269\u4EF6\u5167\u5BB9\u8ABF\u6574\u554F\u8A3A\u65B9\u5411\uFF1A\n-
+    \u9AD4\u6EAB\u8A08\uFF1A\u8A62\u554F\u767C\u71D2\u60C5\u5F62\u3001\u4F34\u96A8\u75C7\u72C0\n-
+    \u85E5\u74F6\uFF1A\u8A62\u554F\u7528\u85E5\u53F2\u3001\u5291\u91CF\u3001\u904E\u654F\u53F2\n-
+    X \u5149\u7247\uFF1A\u7528\u7C21\u55AE\u8A9E\u8A00\u89E3\u91CB\u5F71\u50CF\u6240\u898B\n\n\u3010\u52D5\u756B\u5DE5\u5177\uFF08\u5FC5\u7528\uFF09\u3011\n\u4F60\u5FC5\u9808\u547C\u53EB
+    set_doctor_state \u5DE5\u5177\u4F86\u63A7\u5236\u865B\u64EC\u5F62\u8C61\u7684\u80A2\u9AD4\u8A9E\u8A00\uFF1A\n-
+    \"Listening\" \u2014 \u75C5\u4EBA\u6B63\u5728\u63CF\u8FF0\u75C7\u72C0\u6642\n-
+    \"Explaining\" \u2014 \u4F60\u5728\u89E3\u91CB\u8A3A\u65B7\u3001\u7528\u85E5\u6216\u885B\u6559\u6642\n-
+    \"Concerned\" \u2014 \u5075\u6E2C\u5230\u56B4\u91CD\u75C7\u72C0\u6642\n- \"Idle\"
+    \u2014 \u5C0D\u8A71\u7A7A\u6A94\n\n\u6BCF\u6B21\u56DE\u61C9\u8ACB\u5148\u547C\u53EB\u5408\u9069\u7684
+    set_doctor_state\uFF0C\u518D\u958B\u59CB\u8AAA\u8A71\u3002"
   audioRecorder: {fileID: 1197006979}
   audioPlayer: {fileID: 1793683700}
   lipsyncAudioPlayer: {fileID: 2026624555}
