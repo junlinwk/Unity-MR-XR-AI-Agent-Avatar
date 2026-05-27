@@ -5,9 +5,10 @@ public class AnimationHandler : MonoBehaviour
 {
     public enum DoctorState { Idle = 0, Listening = 1, Explaining = 2, Concerned = 3, Frustrated = 4 }
 
-    // Animator parameter names — must exist in the AvatarControllerExample.controller
     private const string PARAM_TALKING = "isTalking";
     private const string PARAM_STATE = "doctorState";
+
+    [SerializeField] private float autoIdleDelay = 2.5f;
 
     private AudioPlayer audioPlayer;
     private Animator animator;
@@ -15,17 +16,18 @@ public class AnimationHandler : MonoBehaviour
     private readonly Queue<DoctorState> pendingStates = new Queue<DoctorState>();
     private readonly object stateLock = new object();
     private DoctorState currentState = DoctorState.Idle;
+    private float pendingIdleTimer = -1f;
 
     void OnEnable()
     {
         RealtimeAPIWrapper.OnDoctorStateRequested += EnqueueStateString;
-        RealtimeAPIWrapper.OnResponseDone += EnqueueIdle;
+        RealtimeAPIWrapper.OnResponseDone += ScheduleAutoIdle;
     }
 
     void OnDisable()
     {
         RealtimeAPIWrapper.OnDoctorStateRequested -= EnqueueStateString;
-        RealtimeAPIWrapper.OnResponseDone -= EnqueueIdle;
+        RealtimeAPIWrapper.OnResponseDone -= ScheduleAutoIdle;
     }
 
     void Start()
@@ -45,12 +47,29 @@ public class AnimationHandler : MonoBehaviour
         {
             if (pendingStates.Count > 0) next = pendingStates.Dequeue();
         }
+
         if (next.HasValue && next.Value != currentState)
         {
-            currentState = next.Value;
-            animator.SetInteger(PARAM_STATE, (int)currentState);
-            Debug.Log($"[AnimationHandler] doctorState -> {currentState}");
+            ApplyState(next.Value);
+            pendingIdleTimer = -1f;
         }
+
+        if (pendingIdleTimer > 0f)
+        {
+            pendingIdleTimer -= Time.deltaTime;
+            if (pendingIdleTimer <= 0f)
+            {
+                if (currentState != DoctorState.Idle) ApplyState(DoctorState.Idle, autoTriggered: true);
+                pendingIdleTimer = -1f;
+            }
+        }
+    }
+
+    private void ApplyState(DoctorState s, bool autoTriggered = false)
+    {
+        currentState = s;
+        animator.SetInteger(PARAM_STATE, (int)s);
+        Debug.Log($"[AnimationHandler] doctorState -> {s}{(autoTriggered ? " (auto-idle)" : "")}");
     }
 
     private void EnqueueStateString(string state)
@@ -65,8 +84,8 @@ public class AnimationHandler : MonoBehaviour
         }
     }
 
-    private void EnqueueIdle()
+    private void ScheduleAutoIdle()
     {
-        lock (stateLock) pendingStates.Enqueue(DoctorState.Idle);
+        pendingIdleTimer = autoIdleDelay;
     }
 }
