@@ -317,7 +317,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1574818794}
     m_Modifications:
     - target: {fileID: -8974346070682856724, guid: b508d348b9a5b4375b7f04a88e04e5b9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -357,7 +357,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b508d348b9a5b4375b7f04a88e04e5b9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b508d348b9a5b4375b7f04a88e04e5b9, type: 3}
       propertyPath: m_LocalRotation.z
@@ -402,6 +402,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b508d348b9a5b4375b7f04a88e04e5b9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 253198928}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b508d348b9a5b4375b7f04a88e04e5b9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 253198930}
   m_SourcePrefab: {fileID: 100100000, guid: b508d348b9a5b4375b7f04a88e04e5b9, type: 3}
 --- !u!1 &253198927 stripped
 GameObject:
@@ -423,6 +426,32 @@ MonoBehaviour:
   objectName: Medicine Bottle
   objectDescription: An acetaminophen 500mg bottle. Only 2 tablets remaining. Label
     shows the patient took the last dose 4 hours ago.
+--- !u!4 &253198929 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b508d348b9a5b4375b7f04a88e04e5b9, type: 3}
+  m_PrefabInstance: {fileID: 253198926}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &253198930
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253198927}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &313298034
 GameObject:
   m_ObjectHideFlags: 0
@@ -1524,11 +1553,11 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1574818794}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 64f358878c8764567830eb4707c3126c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.03
+      value: 0.030000001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 64f358878c8764567830eb4707c3126c, type: 3}
       propertyPath: m_LocalScale.y
@@ -1536,7 +1565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 64f358878c8764567830eb4707c3126c, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.03
+      value: 0.030000001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 64f358878c8764567830eb4707c3126c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1659,6 +1688,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1109686835 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 64f358878c8764567830eb4707c3126c, type: 3}
+  m_PrefabInstance: {fileID: 1109686831}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1173924091
 GameObject:
   m_ObjectHideFlags: 0
@@ -1749,7 +1783,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1574818794}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 69c8e40d8d24447c1b61f8dce204d2d0, type: 3}
       propertyPath: m_LocalScale.x
@@ -1785,7 +1819,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 69c8e40d8d24447c1b61f8dce204d2d0, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 69c8e40d8d24447c1b61f8dce204d2d0, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1859,6 +1893,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.015838044, y: 0.0070159724, z: 0.11044841}
   m_Center: {x: 0, y: 1.1641536e-10, z: 0.05380521}
+--- !u!4 &1389065437 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 69c8e40d8d24447c1b61f8dce204d2d0, type: 3}
+  m_PrefabInstance: {fileID: 1389065431}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1445175869
 GameObject:
   m_ObjectHideFlags: 0
@@ -2124,7 +2163,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1389065437}
+  - {fileID: 1109686835}
+  - {fileID: 253198929}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1675894542
@@ -3338,6 +3380,3 @@ SceneRoots:
   - {fileID: 1445175870}
   - {fileID: 1574818794}
   - {fileID: 859392265}
-  - {fileID: 1389065431}
-  - {fileID: 1109686831}
-  - {fileID: 253198926}

@@ -64,7 +64,7 @@ public class RealtimeAPIWrapper : MonoBehaviour
         {
             var uri = new Uri("wss://api.openai.com/v1/realtime?model=gpt-realtime-mini");
             ws.Options.SetRequestHeader("Authorization", "Bearer " + apiKey);
-            ws.Options.SetRequestHeader("OpenAI-Beta", "realtime=v1");
+            //ws.Options.SetRequestHeader("OpenAI-Beta", "realtime=v1");
             await ws.ConnectAsync(uri, CancellationToken.None);
             OnWebSocketConnected?.Invoke();
             _ = ReceiveMessages();
@@ -127,7 +127,7 @@ public class RealtimeAPIWrapper : MonoBehaviour
                 type = "response.create",
                 response = new
                 {
-                    modalities = new[] { "audio", "text" },
+                    output_modalities = new[] { "audio" },
                     instructions = "Please provide a transcript. If the language is mandarin, please provide the transcript in traditional Chinese (TW)."
                 }
             };
@@ -255,27 +255,26 @@ public class RealtimeAPIWrapper : MonoBehaviour
     private Dictionary<string, Action<JObject>> GetMessageHandlers()
     {
         return new Dictionary<string, Action<JObject>>
-        {
-            { "response.audio.delta", HandleAudioDelta },
-            { "response.audio_transcript.delta", HandleTranscriptDelta },
-            { "conversation.item.created", _ => OnConversationItemCreated?.Invoke() },
-            { "response.done", HandleResponseDone },
-            { "response.created", HandleResponseCreated },
-            { "session.created", _ => {
-                OnSessionCreated?.Invoke();
-                SendSessionUpdate();
-                SendTextToAPI(systemPrompt);
-            }},
-            { "response.function_call_arguments.done", HandleFunctionCallDone },
-            { "response.audio.done", _ => OnResponseAudioDone?.Invoke() },
-            { "response.audio_transcript.done", _ => OnResponseAudioTranscriptDone?.Invoke() },
-            { "response.content_part.done", _ => OnResponseContentPartDone?.Invoke() },
-            { "response.output_item.done", _ => OnResponseOutputItemDone?.Invoke() },
-            { "response.output_item.added", _ => OnResponseOutputItemAdded?.Invoke() },
-            { "response.content_part.added", _ => OnResponseContentPartAdded?.Invoke() },
-            { "rate_limits.updated", _ => OnRateLimitsUpdated?.Invoke() },
-            { "error", HandleError }
-        };
+      {
+          { "response.output_audio.delta", HandleAudioDelta },
+          { "response.output_audio_transcript.delta", HandleTranscriptDelta },
+          { "conversation.item.created", _ => OnConversationItemCreated?.Invoke() },
+          { "response.done", HandleResponseDone },
+          { "response.created", HandleResponseCreated },
+          { "session.created", _ => {
+              OnSessionCreated?.Invoke();
+              SendTextToAPI(systemPrompt);
+          }},
+          { "response.function_call_arguments.done", HandleFunctionCallDone },
+          { "response.output_audio.done", _ => OnResponseAudioDone?.Invoke() },
+          { "response.output_audio_transcript.done", _ => OnResponseAudioTranscriptDone?.Invoke() },
+          { "response.content_part.done", _ => OnResponseContentPartDone?.Invoke() },
+          { "response.output_item.done", _ => OnResponseOutputItemDone?.Invoke() },
+          { "response.output_item.added", _ => OnResponseOutputItemAdded?.Invoke() },
+          { "response.content_part.added", _ => OnResponseContentPartAdded?.Invoke() },
+          { "rate_limits.updated", _ => OnRateLimitsUpdated?.Invoke() },
+          { "error", HandleError }
+      };
     }
 
     /// <summary>
