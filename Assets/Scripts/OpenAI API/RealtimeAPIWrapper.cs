@@ -37,7 +37,13 @@ public class RealtimeAPIWrapper : MonoBehaviour
     public static event Action OnConnectButtonPressed;
     public static event Action<string> OnDoctorStateRequested;
 
-    private void Start() => AudioRecorder.OnAudioRecorded += SendAudioToAPI;
+    [SerializeField] private bool autoConnectOnStart = true;
+
+    private void Start()
+    {
+        AudioRecorder.OnAudioRecorded += SendAudioToAPI;
+        if (autoConnectOnStart) ConnectWebSocketButton();
+    }
     private void OnApplicationQuit() => DisposeWebSocket();
 
 

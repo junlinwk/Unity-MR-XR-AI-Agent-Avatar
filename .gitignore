@@ -72,6 +72,10 @@ Assets/Samples/Meta Avatars SDK/40.0.1/Sample Scenes/Environments/
 Assets/Samples/Meta Avatars SDK/40.0.1/Sample Scenes/Environments.meta
 Assets/Unity.VisualScripting.Generated/
 Assets/Unity.VisualScripting.Generated.meta
-
-
 ignorethis/
+
+
+# Builds and build artifacts
+*.apk
+.utmp/
+*BurstDebugInformation_DoNotShip/
