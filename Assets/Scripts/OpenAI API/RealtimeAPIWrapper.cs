@@ -52,9 +52,13 @@ public class RealtimeAPIWrapper : MonoBehaviour
     /// </summary>
     public async void ConnectWebSocketButton()
     {
-        if (ws != null) DisposeWebSocket();
+        if (ws != null && ws.State == WebSocketState.Open)
+        {
+            DisposeWebSocket();
+        }
         else
         {
+            if (ws != null) DisposeWebSocket();
             ws = new ClientWebSocket();
             await ConnectWebSocket();
         }
@@ -437,13 +441,16 @@ public class RealtimeAPIWrapper : MonoBehaviour
     /// </summary>
     private async void DisposeWebSocket()
     {
-        if (ws != null && (ws.State == WebSocketState.Open || ws.State == WebSocketState.CloseReceived))
+        if (ws == null) return;
+        try
         {
-            await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by user", CancellationToken.None);
-            ws.Dispose();
-            ws = null;
-            OnWebSocketClosed?.Invoke();
+            if (ws.State == WebSocketState.Open || ws.State == WebSocketState.CloseReceived)
+                await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by user", CancellationToken.None);
         }
+        catch (Exception e) { Debug.LogWarning("websocket close error (ignored): " + e.Message); }
+        try { ws.Dispose(); } catch { }
+        ws = null;
+        OnWebSocketClosed?.Invoke();
     }
 
 }
