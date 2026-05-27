@@ -175,6 +175,34 @@ public class RealtimeAPIWrapper : MonoBehaviour
         }
     }
 
+    public async void SendUserMessageWithFullResponse(string text)
+    {
+        if (ws == null || ws.State != WebSocketState.Open) return;
+
+        var itemMessage = new
+        {
+            type = "conversation.item.create",
+            item = new
+            {
+                type = "message",
+                role = "user",
+                content = new[] { new { type = "input_text", text } }
+            }
+        };
+        string itemJson = Newtonsoft.Json.JsonConvert.SerializeObject(itemMessage);
+        byte[] itemBytes = Encoding.UTF8.GetBytes(itemJson);
+        await ws.SendAsync(new ArraySegment<byte>(itemBytes), WebSocketMessageType.Text, true, CancellationToken.None);
+
+        var responseMessage = new
+        {
+            type = "response.create",
+            response = new { modalities = new[] { "text", "audio" } }
+        };
+        string responseJson = Newtonsoft.Json.JsonConvert.SerializeObject(responseMessage);
+        byte[] responseBytes = Encoding.UTF8.GetBytes(responseJson);
+        await ws.SendAsync(new ArraySegment<byte>(responseBytes), WebSocketMessageType.Text, true, CancellationToken.None);
+    }
+
     /// <summary>
     /// receives messages from websocket and handles them
     /// </summary>
