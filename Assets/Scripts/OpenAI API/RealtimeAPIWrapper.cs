@@ -263,6 +263,7 @@ public class RealtimeAPIWrapper : MonoBehaviour
           { "response.created", HandleResponseCreated },
           { "session.created", _ => {
               OnSessionCreated?.Invoke();
+              SendSessionUpdate();
               SendTextToAPI(systemPrompt);
           }},
           { "response.function_call_arguments.done", HandleFunctionCallDone },
